@@ -11,21 +11,29 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+from settings.env_utils import get_env_bool, get_env, get_env_int
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x#%m$j62g7edl8$09=0od8sfngecv123np#(3x$*i*n2h8uosu'
+SECRET_KEY = get_env('SECRET_KEY', 'django-insecure-x#%m$j62g7edl8$09=0od8sfngecv123np#(3x$*i*n2h8uosu')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ALLOWED_HOSTS = get_env("ALLOWED_HOSTS", required=True).split(",")
 
-ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = get_env(
+    "CSRF_TRUSTED_ORIGINS", default="https://example.com"
+).split(",")
+
+INTERNAL_IPS = [
+    "127.0.0.1"
+]
 
 
 # Application definition
@@ -57,12 +65,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+DEBUG = get_env_bool("DEBUG", default=False)
+DEBUG_TOOLBAR = get_env_bool("DEBUG_TOOLBAR", default=True)
+if DEBUG_TOOLBAR:
+
+    DEBUG_TOOLBAR_PATCH_SETTINGS = True
+
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+
 ROOT_URLCONF = 'settings.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,6 +140,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = 'static/'
 
@@ -132,8 +151,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # REDIS CELERY
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
-REDIS_PORT = os.getenv('REDIS_PORT', '6379')
+REDIS_HOST = get_env('REDIS_HOST', '127.0.0.1')
+REDIS_PORT = get_env_int('REDIS_PORT', 6379)
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -158,8 +177,9 @@ CELERY_IMPORTS = (
     'applications.tasks.tasks',
 )
 
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
-CHAT_ID = os.getenv('CHAT_ID', '')
+TELEGRAM_BOT_TOKEN = get_env('TELEGRAM_BOT_TOKEN', '', required=True)
+CHAT_ID = get_env('CHAT_ID', '', required=True)
 
-LOGIN = os.getenv('LOGIN', '')
-PASSWORD = os.getenv('PASSWORD', '')
+LOGIN = get_env('LOGIN', '', required=True)
+PASSWORD = get_env('PASSWORD', '', required=True)
+CHROME_DRIVER_PATH = get_env('CHROME_DRIVER_PATH', '')
