@@ -1,9 +1,11 @@
 import asyncio
 
 from telegram import Bot
-from src.applications.insta_parser.utils import get_instagram_posts
-from src.applications.tasks.manage_celery import celery_app
+
 from django.conf import settings
+
+from applications.tasks import celery_app
+from applications.insta_parser.utils import get_instagram_posts
 
 
 @celery_app.task(name='Update data instagram')

@@ -155,7 +155,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_IMPORTS = (
-    'applications.background_tasks.tasks',
+    'applications.tasks.tasks',
 )
 
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '') # 8097499867:AAFiZOd9tfetSrqaFaZkkDBWSVU5gbMupRI

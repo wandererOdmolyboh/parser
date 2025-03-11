@@ -1,12 +1,10 @@
-version: '3.8'
-
 networks:
   local.cst:
 
 services:
 
   redis:
-    container_name: cst-redis
+    container_name: redis
     image: redis:latest
     restart: always
     ports:
@@ -44,9 +42,7 @@ services:
       - TIME_ZONE=${TIME_ZONE}
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - CHAT_ID=${CHAT_ID}
-    depends_on:
-      postgresql:
-        condition: service_healthy
+
     deploy:
       resources:
         limits:
