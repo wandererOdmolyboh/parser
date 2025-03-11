@@ -158,5 +158,8 @@ CELERY_IMPORTS = (
     'applications.tasks.tasks',
 )
 
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '') # 8097499867:AAFiZOd9tfetSrqaFaZkkDBWSVU5gbMupRI
-CHAT_ID = os.getenv('CHAT_ID', '') # 396306584
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
+CHAT_ID = os.getenv('CHAT_ID', '')
+
+LOGIN = os.getenv('LOGIN', '')
+PASSWORD = os.getenv('PASSWORD', '')

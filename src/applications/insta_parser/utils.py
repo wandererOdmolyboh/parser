@@ -7,6 +7,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 
+from settings import settings
+
 logger = logging.getLogger(__name__)
 
 
@@ -39,7 +41,7 @@ def get_instagram_posts(username: str, hashtag: str = None):
     driver = __get_driver()
     driver.get(url)
 
-    login_instagram(driver, "+380665895176", "19CVBwer03")
+    login_instagram(driver, settings.LOGIN, settings.PASSWORD)
 
     driver.get(url)
     time.sleep(5)
