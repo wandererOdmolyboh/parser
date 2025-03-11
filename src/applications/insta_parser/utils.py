@@ -45,10 +45,8 @@ def get_instagram_posts(username: str, hashtag: str = None):
     driver = __get_driver()
     driver.get(url)
 
-    # login_instagram(driver, settings.LOGIN, settings.PASSWORD)
-    print()
-    print(url)
-    print()
+    login_instagram(driver, settings.LOGIN, settings.PASSWORD)
+
     driver.get(url)
     time.sleep(5)
 
